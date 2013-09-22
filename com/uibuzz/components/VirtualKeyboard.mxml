@@ -14,6 +14,13 @@
     <fx:Script>
         <![CDATA[
             import com.uibuzz.events.VirtualKeyboardEvent;
+
+            public var inputControl:Object;
+
+            public var tabOrder:Array = new Array();
+
+            public var currentTab:Number = 0;
+
             protected function handleShiftButton(event:MouseEvent):void
             {
                 if (this.currentState == "Lowercase")
@@ -25,20 +32,95 @@
                     this.currentState = "Lowercase";
                 }
             }
+
+            protected function handleCapsLockButton(event:MouseEvent):void
+            {
+                if (this.currentState == "CapsLock")
+                {
+                    this.currentState = "Lowercase";
+                }
+                else
+                {
+                    this.currentState = "CapsLock";
+                }
+            }
             
             protected function handleButtonClick(event:MouseEvent):void
             {
+                if (inputControl)
+                {
+                    switch (event.currentTarget.label)
+                    {
+                        case 'Clear':
+                            this.inputControl.text = '';
+                            break;
+                        case 'Space':
+                            this.inputControl.text += ' ';
+                            break;
+                        case 'Delete':
+                            var value:String = this.inputControl.text;
+                            this.inputControl.text = value.substr(0, value.length - 1);
+                            break;
+                        case 'Tab':
+                            this.focusNext();
+                            break;
+                        default:
+                            this.addToString(Button(event.target).label);
+                            break;
+
+                    }
+                    returnFocus();
+                }
                 var e:VirtualKeyboardEvent = new VirtualKeyboardEvent("KeyClicked");
                 e.keyLabel = event.currentTarget.label;
                 dispatchEvent(e);
             }
+
+            private function addToString(text:String):void
+            {
+                var is_combobox:Boolean = this.inputControl.hasOwnProperty('selectedItem')
+                if (this.inputControl.hasOwnProperty('prompt'))
+                {
+                    if (this.inputControl.prompt == this.inputControl.text)
+                    {
+                        is_combobox ? this.inputControl.selectedItem = text : this.inputControl.text = text;
+                    } else
+                    {
+                        is_combobox ? this.inputControl.selectedItem += text : this.inputControl.text += text;
+                    }
+                } else
+                {
+                    is_combobox ? this.inputControl.selectedItem += text : this.inputControl.text += text;
+                }
+            }
             
+            public function newFocus(o:Object):void
+            {
+                this.inputControl = o;
+            }
+
+            public function focusNext():void
+            {
+                var n:Number = this.currentTab + 1;
+                if (n >= this.tabOrder.length) n = 0;
+                this.currentTab = n;
+                this.newFocus(this.tabOrder[n]);
+            }
+
+            private function returnFocus():void
+            {
+                if (inputControl)
+                {
+                    inputControl.setFocus();
+                }
+            }
         ]]>
     </fx:Script>
     
     <s:states>
         <s:State name="Lowercase"/>
         <s:State name="Uppercase"/>
+        <s:State name="CapsLock"/>
     </s:states>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -91,34 +173,34 @@
     <s:Button id="btnTab" x="10" y="50" width="50" height="32" label="Tab" click="handleButtonClick(event)"/>
     <s:Button id="btnQ" x="70" y="50" width="32" height="32" label="q"
               click="handleButtonClick(event)"
-              label.Uppercase="Q"/>
+              label.Uppercase="Q" label.CapsLock="Q"/>
     <s:Button id="btnW" x="110" y="50" width="32" height="32" label="w"
               click="handleButtonClick(event)"
-              label.Uppercase="W"/>
+              label.Uppercase="W" label.CapsLock="W"/>
     <s:Button id="btnE" x="150" y="50" width="32" height="32" label="e"
               click="handleButtonClick(event)"
-              label.Uppercase="E"/>
+              label.Uppercase="E" label.CapsLock="E"/>
     <s:Button id="btnR" x="190" y="50" width="32" height="32" label="r"
               click="handleButtonClick(event)"
-              label.Uppercase="R"/>
+              label.Uppercase="R" label.CapsLock="R"/>
     <s:Button id="btnT" x="230" y="50" width="32" height="32" label="t"
               click="handleButtonClick(event)"
-              label.Uppercase="T"/>
+              label.Uppercase="T" label.CapsLock="T"/>
     <s:Button id="btnY" x="270" y="50" width="32" height="32" label="y"
               click="handleButtonClick(event)"
-              label.Uppercase="Y"/>
+              label.Uppercase="Y" label.CapsLock="Y"/>
     <s:Button id="btnU" x="310" y="50" width="32" height="32" label="u"
               click="handleButtonClick(event)"
-              label.Uppercase="U"/>
+              label.Uppercase="U" label.CapsLock="U"/>
     <s:Button id="btnI" x="350" y="50" width="32" height="32" label="i"
               click="handleButtonClick(event)"
-              label.Uppercase="I"/>
+              label.Uppercase="I" label.CapsLock="I"/>
     <s:Button id="btnO" x="390" y="50" width="32" height="32" label="o"
               click="handleButtonClick(event)"
-              label.Uppercase="O"/>
+              label.Uppercase="O" label.CapsLock="O"/>
     <s:Button id="btnP" x="430" y="50" width="32" height="32" label="p"
               click="handleButtonClick(event)"
-              label.Uppercase="P"/>
+              label.Uppercase="P" label.CapsLock="P"/>
     <s:Button id="btnLeftBracket" x="470" y="50" width="32" height="32" label="["
               click="handleButtonClick(event)"
               label.Uppercase="{"/>
@@ -128,33 +210,34 @@
     <s:Button id="btnBackSlash" x="550" y="50" width="32" height="32" label="\"
               click="handleButtonClick(event)"
               label.Uppercase="|"/>
+    <s:Button id="btnCapsLock" x="10" y="90" width="70" height="32" label="CAPS" click="handleCapsLockButton(event)"/>
     <s:Button id="btnA" x="90" y="90" width="32" height="32" label="a"
               click="handleButtonClick(event)"
-              label.Uppercase="A"/>
+              label.Uppercase="A" label.CapsLock="A"/>
     <s:Button id="btnS" x="130" y="90" width="32" height="32" label="s"
               click="handleButtonClick(event)"
-              label.Uppercase="S"/>
+              label.Uppercase="S" label.CapsLock="S"/>
     <s:Button id="btnD" x="170" y="90" width="32" height="32" label="d"
               click="handleButtonClick(event)"
-              label.Uppercase="D"/>
+              label.Uppercase="D" label.CapsLock="D"/>
     <s:Button id="btnF" x="210" y="90" width="32" height="32" label="f"
               click="handleButtonClick(event)"
-              label.Uppercase="F"/>
+              label.Uppercase="F" label.CapsLock="F"/>
     <s:Button id="btnG" x="250" y="90" width="32" height="32" label="g"
               click="handleButtonClick(event)"
-              label.Uppercase="G"/>
+              label.Uppercase="G" label.CapsLock="G"/>
     <s:Button id="btnH" x="290" y="90" width="32" height="32" label="h"
               click="handleButtonClick(event)"
-              label.Uppercase="H"/>
+              label.Uppercase="H" label.CapsLock="H"/>
     <s:Button id="btnJ" x="330" y="90" width="32" height="32" label="j"
               click="handleButtonClick(event)"
-              label.Uppercase="J"/>
+              label.Uppercase="J" label.CapsLock="J"/>
     <s:Button id="btnK" x="370" y="90" width="32" height="32" label="k"
               click="handleButtonClick(event)"
-              label.Uppercase="K"/>
+              label.Uppercase="K" label.CapsLock="K"/>
     <s:Button id="btnL" x="410" y="90" width="32" height="32" label="l"
               click="handleButtonClick(event)"
-              label.Uppercase="L"/>
+              label.Uppercase="L" label.CapsLock="L"/>
     <s:Button id="btnSemiColon" x="450" y="90" width="32" height="32" label=";"
               click="handleButtonClick(event)"
               label.Uppercase=":"/>
@@ -163,26 +246,26 @@
               label.Uppercase="&quot;"/>
     <s:Button id="btnZ" x="110" y="130" width="32" height="32" label="z"
               click="handleButtonClick(event)"
-              label.Uppercase="Z"/>
+              label.Uppercase="Z" label.CapsLock="Z"/>
     <s:Button id="btnX" x="150" y="130" width="32" height="32" label="x"
               click="handleButtonClick(event)"
-              label.Uppercase="X"/>
+              label.Uppercase="X" label.CapsLock="X"/>
     <s:Button id="btnC" x="190" y="130" width="32" height="32" label="c"
               click="handleButtonClick(event)"
-              label.Uppercase="C"/>
+              label.Uppercase="C" label.CapsLock="C"/>
     <s:Button id="btnV" x="230" y="130" width="32" height="32" label="v"
               click="handleButtonClick(event)"
-              label.Uppercase="V"/>
+              label.Uppercase="V" label.CapsLock="V"/>
     <s:Button id="btnB" x="270" y="130" width="32" height="32" label="b"
               click="handleButtonClick(event)"
-              label.Uppercase="B"/>
+              label.Uppercase="B" label.CapsLock="B"/>
     <s:Button id="btnSpace" x="150" y="170" width="272" height="32" label="Space" click="handleButtonClick(event)"/>
     <s:Button id="btnN" x="310" y="130" width="32" height="32" label="n"
               click="handleButtonClick(event)"
-              label.Uppercase="N"/>
+              label.Uppercase="N" label.CapsLock="N"/>
     <s:Button id="btnM" x="350" y="130" width="32" height="32" label="m"
               click="handleButtonClick(event)"
-              label.Uppercase="M"/>
+              label.Uppercase="M" label.CapsLock="M"/>
     <s:Button id="btnComma" x="390" y="130" width="32" height="32" label=","
               click="handleButtonClick(event)"
               label.Uppercase="&lt;"/>

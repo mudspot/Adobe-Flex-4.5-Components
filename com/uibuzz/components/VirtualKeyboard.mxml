@@ -10,12 +10,21 @@
     <fx:Metadata>
         [Event(name="KeyClicked", type="com.uibuzz.events.VirtualKeyboardEvent")]
     </fx:Metadata>
+
+    <fx:Style>
+        .vkb_button
+        {
+            cornerRadius: 1;
+        }
+    </fx:Style>
+
     
     <fx:Script>
         <![CDATA[
             import com.uibuzz.events.VirtualKeyboardEvent;
+            import spark.components.supportClasses.SkinnableTextBase;
 
-            public var inputControl:Object;
+            public var inputControl:SkinnableTextBase;
 
             public var tabOrder:Array = new Array();
 
@@ -78,23 +87,22 @@
 
             private function addToString(text:String):void
             {
-                var is_combobox:Boolean = this.inputControl.hasOwnProperty('selectedItem')
                 if (this.inputControl.hasOwnProperty('prompt'))
                 {
                     if (this.inputControl.prompt == this.inputControl.text)
                     {
-                        is_combobox ? this.inputControl.selectedItem = text : this.inputControl.text = text;
+                        this.inputControl.text = text;
                     } else
                     {
-                        is_combobox ? this.inputControl.selectedItem += text : this.inputControl.text += text;
+                        this.inputControl.text += text;
                     }
                 } else
                 {
-                    is_combobox ? this.inputControl.selectedItem += text : this.inputControl.text += text;
+                    this.inputControl.text += text;
                 }
             }
             
-            public function newFocus(o:Object):void
+            public function newFocus(o:SkinnableTextBase):void
             {
                 this.inputControl = o;
             }
@@ -111,7 +119,9 @@
             {
                 if (inputControl)
                 {
+                    var pos:int = inputControl.selectionAnchorPosition;
                     inputControl.setFocus();
+                    inputControl.selectRange(pos, pos);
                 }
             }
         ]]>
@@ -126,153 +136,153 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
     <s:Button id="btn1" x="50" y="10" width="32" height="32" label="1"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="!"/>
     <s:Button id="btnTilde" x="10" y="10" width="32" height="32" label="`"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="~"/>
     <s:Button id="btn2" x="90" y="10" width="32" height="32" label="2"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="@" fontSize.Uppercase="11"/>
     <s:Button id="btn3" x="130" y="10" width="32" height="32" label="3"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="#"/>
     <s:Button id="btn4" x="170" y="10" width="32" height="32" label="4"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="$"/>
     <s:Button id="btn5" x="210" y="10" width="32" height="32" label="5"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="%"/>
     <s:Button id="btn6" x="250" y="10" width="32" height="32" label="6"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="^"/>
     <s:Button id="btn7" x="290" y="10" width="32" height="32" label="7"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="&amp;"/>
     <s:Button id="btn8" x="330" y="10" width="32" height="32" label="8"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="*"/>
     <s:Button id="btn9" x="370" y="10" width="32" height="32" label="9"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="("/>
     <s:Button id="btn0" x="410" y="10" width="32" height="32" label="0"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase=")"/>
     <s:Button id="btnMinus" x="450" y="10" width="32" height="32" label="-"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="_"/>
     <s:Button id="btnEquals" x="490" y="10" width="32" height="32" label="="
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="+"/>
-    <s:Button id="btnDelete" x="530" y="10" width="70" height="32" label="Delete" click="handleButtonClick(event)"/>
-    <s:Button id="btnEnter" x="530" y="90" width="70" height="32" label="Enter" click="handleButtonClick(event)"/>
+    <s:Button id="btnDelete" x="530" y="10" width="70" height="32" label="Delete" click="handleButtonClick(event)" styleName="vkb_button"/>
+    <s:Button id="btnEnter" x="530" y="90" width="70" height="32" label="Enter" click="handleButtonClick(event)" styleName="vkb_button"/>
     <s:Button id="btnRightShift" x="510" y="130" width="70" height="32" label="Shift"
-              click="handleShiftButton(event)"/>
+              click="handleShiftButton(event)" styleName="vkb_button"/>
     <s:Button id="btnLeftShift" x="30" y="130" width="70" height="32" label="Shift"
-              click="handleShiftButton(event)"/>
-    <s:Button id="btnTab" x="10" y="50" width="50" height="32" label="Tab" click="handleButtonClick(event)"/>
+              click="handleShiftButton(event)" styleName="vkb_button"/>
+    <s:Button id="btnTab" x="10" y="50" width="50" height="32" label="Tab" click="handleButtonClick(event)" styleName="vkb_button"/>
     <s:Button id="btnQ" x="70" y="50" width="32" height="32" label="q"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="Q" label.CapsLock="Q"/>
     <s:Button id="btnW" x="110" y="50" width="32" height="32" label="w"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="W" label.CapsLock="W"/>
     <s:Button id="btnE" x="150" y="50" width="32" height="32" label="e"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="E" label.CapsLock="E"/>
     <s:Button id="btnR" x="190" y="50" width="32" height="32" label="r"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="R" label.CapsLock="R"/>
     <s:Button id="btnT" x="230" y="50" width="32" height="32" label="t"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="T" label.CapsLock="T"/>
     <s:Button id="btnY" x="270" y="50" width="32" height="32" label="y"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="Y" label.CapsLock="Y"/>
     <s:Button id="btnU" x="310" y="50" width="32" height="32" label="u"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="U" label.CapsLock="U"/>
     <s:Button id="btnI" x="350" y="50" width="32" height="32" label="i"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="I" label.CapsLock="I"/>
     <s:Button id="btnO" x="390" y="50" width="32" height="32" label="o"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="O" label.CapsLock="O"/>
     <s:Button id="btnP" x="430" y="50" width="32" height="32" label="p"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="P" label.CapsLock="P"/>
     <s:Button id="btnLeftBracket" x="470" y="50" width="32" height="32" label="["
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="{"/>
     <s:Button id="btnRightBracket" x="510" y="50" width="32" height="32" label="]"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="}"/>
     <s:Button id="btnBackSlash" x="550" y="50" width="32" height="32" label="\"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="|"/>
-    <s:Button id="btnCapsLock" x="10" y="90" width="70" height="32" label="CAPS" click="handleCapsLockButton(event)"/>
+    <s:Button id="btnCapsLock" x="10" y="90" width="70" height="32" label="CAPS" click="handleCapsLockButton(event)" styleName="vkb_button"/>
     <s:Button id="btnA" x="90" y="90" width="32" height="32" label="a"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="A" label.CapsLock="A"/>
     <s:Button id="btnS" x="130" y="90" width="32" height="32" label="s"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="S" label.CapsLock="S"/>
     <s:Button id="btnD" x="170" y="90" width="32" height="32" label="d"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="D" label.CapsLock="D"/>
     <s:Button id="btnF" x="210" y="90" width="32" height="32" label="f"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="F" label.CapsLock="F"/>
     <s:Button id="btnG" x="250" y="90" width="32" height="32" label="g"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="G" label.CapsLock="G"/>
     <s:Button id="btnH" x="290" y="90" width="32" height="32" label="h"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="H" label.CapsLock="H"/>
     <s:Button id="btnJ" x="330" y="90" width="32" height="32" label="j"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="J" label.CapsLock="J"/>
     <s:Button id="btnK" x="370" y="90" width="32" height="32" label="k"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="K" label.CapsLock="K"/>
     <s:Button id="btnL" x="410" y="90" width="32" height="32" label="l"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="L" label.CapsLock="L"/>
     <s:Button id="btnSemiColon" x="450" y="90" width="32" height="32" label=";"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase=":"/>
     <s:Button id="btnQuote" x="490" y="90" width="32" height="32" label="'"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="&quot;"/>
     <s:Button id="btnZ" x="110" y="130" width="32" height="32" label="z"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="Z" label.CapsLock="Z"/>
     <s:Button id="btnX" x="150" y="130" width="32" height="32" label="x"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="X" label.CapsLock="X"/>
     <s:Button id="btnC" x="190" y="130" width="32" height="32" label="c"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="C" label.CapsLock="C"/>
     <s:Button id="btnV" x="230" y="130" width="32" height="32" label="v"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="V" label.CapsLock="V"/>
     <s:Button id="btnB" x="270" y="130" width="32" height="32" label="b"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="B" label.CapsLock="B"/>
-    <s:Button id="btnSpace" x="150" y="170" width="272" height="32" label="Space" click="handleButtonClick(event)"/>
+    <s:Button id="btnSpace" x="150" y="170" width="312" height="32" label="Space" click="handleButtonClick(event)" styleName="vkb_button"/>
     <s:Button id="btnN" x="310" y="130" width="32" height="32" label="n"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="N" label.CapsLock="N"/>
     <s:Button id="btnM" x="350" y="130" width="32" height="32" label="m"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="M" label.CapsLock="M"/>
     <s:Button id="btnComma" x="390" y="130" width="32" height="32" label=","
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="&lt;"/>
     <s:Button id="btnStop" x="430" y="130" width="32" height="32" label="."
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="&gt;"/>
     <s:Button id="btnForwardSlash" x="470" y="130" width="32" height="32" label="/"
-              click="handleButtonClick(event)"
+              click="handleButtonClick(event)" styleName="vkb_button"
               label.Uppercase="?"/>
 </s:Group>
